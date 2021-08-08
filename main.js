@@ -317,7 +317,6 @@ function download_as_png(svg){
 	
 	const svg_blob = new Blob([to_svg_string(svg)], {type:"image/svg+xml;charset=utf-8"});
 	const svg_url = URL.createObjectURL(svg_blob);
-	
 	const img = new Image;
 	img.onload = function(){
 		ctx.drawImage(this, 0, 0);
