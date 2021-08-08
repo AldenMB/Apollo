@@ -3,10 +3,11 @@
 const NS = "http://www.w3.org/2000/svg";
 
 function make_draggable(obj, onDrag, onDragStart = (()=>null), onDragDone = (()=>null), constraintGen = (() => (x => x))){
+	const svg = obj.ownerSVGElement;
 	obj.addEventListener('mousedown', startDrag);
-	obj.addEventListener('mousemove', drag);
-	obj.addEventListener('mouseup', endDrag);
-	obj.addEventListener('mouseleave', endDrag);
+	svg.addEventListener('mousemove', drag);
+	svg.addEventListener('mouseup', endDrag);
+	svg.addEventListener('mouseleave', endDrag);
 	let dragging = false;
 	
 	function startDrag(evt){

@@ -62,7 +62,7 @@ function from_centers_pair(c1, c2, max_bend, max_count){
 	const cplus = Z.sum(c1, c2, root);
 	
 	const c3 = (
-		Math.abs(1-Z.abs(Z.prod(cplus, 1/b3))+1/b3) < 1e-8
+		Z.descartes_check([[0,0],c1,c2,cplus],[-1,b1,b2,b3])
 		?
 		cplus
 		:

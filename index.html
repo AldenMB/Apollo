@@ -27,7 +27,7 @@
 
 <h2> Apollonian gasket drawing </h3>
 <p>
-Here are two ways to draw an apollonian gasket! If you have a mouse, drag the centers of three circles around. You can also specify three bends to generate a gasket wich contains those three bends tangent to one another. You can adjust the presentation of the circles, including an indicator of the bend. If you prefer to draw the circles yourself, you can also download a csv list of the circles.
+Here are three ways to draw an apollonian gasket! If you have a mouse, drag the centers of three circles around. Or, keeping the outer circle fixed, drag two mutually tangent inner circles. You can also specify three bends to generate a gasket wich contains those three bends tangent to one another. You can adjust the presentation of the circles, including an indicator of the bend. If you prefer to draw the circles yourself, you can also download a csv list of the circles.
 </p>
 <form id="inputs" onsubmit="return false;">
 <fieldset>
@@ -46,34 +46,6 @@ Here are two ways to draw an apollonian gasket! If you have a mouse, drag the ce
 	</fieldset>
 
 </fieldset>
-
-<!--
-<h3> drag 2 </h3>
-
-
-<input type="checkbox" id="show_handles_shadow" name="show_handles_shadow" checked>
-<label for="show_handles_shadow">Show handles</label>
-</br>
-<label for="min_radius_drag2">Minimum radius</label>
-<input type="number" id="min_radius_drag2" name="min_radius_drag2" value="1">%
-<fieldset>
-	<legend>Export</legend>
-	<button name="export_drag2_svg">SVG</button>
-	<button name="export_drag2_png">PNG</button>
-	<button name="export_drag2_csv">CSV</button>
-</fieldset>
-
-<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="-1 -1 2 2" id="drag_2_svg">
-	<g id="interior_circles"/>
-	<g id="drag_hint"/>
-	<g id="handles">
-		<circle class="drag_handle" cx="-0.5" cy="0" r=0.05 id="drag_2_handle_1"/>
-		<circle class="drag_handle" cx="0.5" cy="0" r=0.05 id="drag_2_handle_2"/>
-	</g>
-</svg>
--->
-
-
 
 
 <h3>Specify bends </h3>
@@ -151,11 +123,38 @@ You need a mouse for this!</br>
 <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="-1 -1 2 2" id="drag_3_svg" style="border:1px solid black">
 	<g id="interior_circles3"/>
 	<g id="handles3">
-		<circle class="drag_handle" cx="-0.5" cy="0" r=0.05 id="drag_3_handle_1"/>
-		<circle class="drag_handle" cx="0.5" cy="0" r=0.05 id="drag_3_handle_2"/>
-		<circle class="drag_handle" cx="0" cy="-0.5" r=0.05 id="drag_3_handle_3"/>
+		<circle class="drag_handle" cx="-0.5" cy="0" r=0.1 id="drag_3_handle_1"/>
+		<circle class="drag_handle" cx="0.5" cy="0" r=0.1 id="drag_3_handle_2"/>
+		<circle class="drag_handle" cx="0" cy="-0.5" r=0.1 id="drag_3_handle_3"/>
 	</g>
 </svg>
+
+
+<h3> Drag two centers </h3>
+
+You need a mouse for this!</br>
+<input type="checkbox" id="show_handles_shadow" name="show_handles_shadow" checked>
+<label for="show_handles_shadow">Show handles</label>
+</br>
+<label for="min_radius_drag2">Minimum radius</label>
+<input type="number" id="min_radius_drag2" name="min_radius_drag2" value="1">%
+<fieldset>
+	<legend>Export</legend>
+	<button name="export_drag2_svg">SVG</button>
+	<button name="export_drag2_png">PNG</button>
+	<button name="export_drag2_csv">CSV</button>
+</fieldset>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="-1 -1 2 2" id="drag_2_svg" style="border:1px solid black">
+	<g id="interior_circles"/>
+	<g id="drag_hint"/>
+	<g id="handles">
+		<circle class="drag_handle" cx="-0.5" cy="0" r=0.1 id="drag_2_handle_1"/>
+		<circle class="drag_handle" cx="0.5" cy="0" r=0.1 id="drag_2_handle_2"/>
+	</g>
+</svg>
+
+
 
 </form>
 

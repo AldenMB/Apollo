@@ -26,7 +26,7 @@ window.onload = function() {
 	listen_run(inputs.elements['background'],update_background_color);
 	listen_run(inputs.elements['highlight_color'], update_highlight_color);
 	listen_run(inputs.elements['width'], function(w){
-		for(const svgid of ['drag_3_svg']){
+		for(const svgid of ['drag_3_svg', 'drag_2_svg']){
 			const svg = document.getElementById(svgid);
 			svg.setAttribute('width', w);
 			svg.setAttribute('height', w);
@@ -41,12 +41,12 @@ window.onload = function() {
 	}
 	
 	listen_run(inputs.elements['show_handles'], function(){
-		//inputs.elements['show_handles_shadow'].checked = inputs.elements['show_handles'].checked;
+		inputs.elements['show_handles_shadow'].checked = inputs.elements['show_handles'].checked;
 		set_handle_visibility();
 	});
 	
 
-	/* Drag 2
+	// Drag 2
 	
 	inputs.elements['show_handles_shadow'].addEventListener('input', function(){
 		inputs.elements['show_handles'].checked = inputs.elements['show_handles_shadow'].checked;
@@ -57,7 +57,7 @@ window.onload = function() {
 	};
 	inputs.elements['export_drag2_png'].onclick = function(){
 		download_as_png(document.getElementById('drag_2_svg'));	
-	};
+	};	
 	function draw_drag2(){
 		const hand1 = document.getElementById('drag_2_handle_1');
 		const hand2 = document.getElementById('drag_2_handle_2');
@@ -81,30 +81,37 @@ window.onload = function() {
 	listen_run(inputs.elements['min_radius_drag2'],()=>draw_drag2());
 	inputs.elements['max_count'].addEventListener('input', ()=>draw_drag2());
 	
-	function constraint_circle(handle){
-		const hx = handle.getAttribute('cx');
-		const hy = handle.getAttribute('cy');
-		const handle_distance = Math.hypot(hx, hy);
-		const radius = 1-handle_distance/2;
-		const center = {
-			x: hx/2,
-			y: hy/2
-		};
-		return {center, radius};
+	function ellipse_from_foci({x1, y1, x2, y2, major_axis}){
+		const cx = (x1+x2)/2;
+		const cy = (y1+y2)/2;
+		
+		const ellipse = document.createElementNS(SVGNS, 'ellipse');
+		ellipse.setAttributeNS(null, 'cx', 0);
+		ellipse.setAttributeNS(null, 'cy', 0);
+		ellipse.setAttributeNS(null, 'rx', major_axis/2);
+		ellipse.setAttributeNS(null, 'ry', 
+			Math.sqrt(major_axis**2 -(x1-x2)**2 -(y1-y2)**2)/2
+		);
+		ellipse.setAttributeNS(null, 'transform', `translate(${cx},${cy}) rotate(${Math.atan2(y2-y1, x2-x1)*180/Math.PI})`);
+		return ellipse;
 	};
 	
 	function make_constraint(handle){
-		const {center, radius} = constraint_circle(handle);
-		function to_circle({x, y}){
-			const dx = x - center.x;
-			const dy = y - center.y;
-			const distance = Math.hypot(dx, dy);
+		const hx = handle.getAttribute('cx');
+		const hy = handle.getAttribute('cy');
+		const h = Math.hypot(hx, hy);
+		const e = h/(2-h);
+		const a = 1-h/2;
+		
+		function to_ellipse({x, y}){
+			const R = Math.hypot(x,y);
+			const r = a*(1-e**2)/(1-(x*hx+y*hy)/(R*(2-h)));
 			return {
-				x: center.x+dx*radius/distance,
-				y: center.y+dy*radius/distance
+				x: x*r/R,
+				y: y*r/R
 			};
 		};
-		return to_circle;
+		return to_ellipse;
 	};
 	
 	function both_pairs(x,y){
@@ -115,11 +122,9 @@ window.onload = function() {
 		document.getElementById('drag_2_handle_2')
 	)){
 		function onDragStart(){
-			const hint = document.createElementNS(SVGNS, 'circle');
-			const {center:{x:cx, y:cy}, radius:r} = constraint_circle(h1);
-			hint.setAttributeNS(null, 'cx', cx);
-			hint.setAttributeNS(null, 'cy', cy);
-			hint.setAttributeNS(null, 'r', r);
+			const hx = h1.getAttribute('cx');
+			const hy = h1.getAttribute('cy');
+			const hint = ellipse_from_foci({x1:hx, y1:hy, x2:0, y2:0, major_axis:2-Math.hypot(hx, hy)});
 			hint.setAttributeNS(null, 'class', 'drag_hint');
 			document.getElementById('drag_hint').replaceChildren(hint);
 		};
@@ -131,7 +136,6 @@ window.onload = function() {
 		};
 		make_draggable(h2, draw_drag2, onDragStart, onDragDone, constraintGen);
 	}
-	*/
 	
 	
 	//Drag 3
